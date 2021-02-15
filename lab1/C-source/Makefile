@@ -1,10 +1,11 @@
+TARGET=task3
 
-TARGET=toggle
+OBJS  = task3.o
 
-OBJS  = toggle.o 
+INSTALLDIR = /usr/local/stmdev/
+
 
 ARCH = STM32L476xx
-INSTALLDIR = /usr/local/stmdev/
 
 CC=arm-none-eabi-gcc
 LD=arm-none-eabi-ld
@@ -14,23 +15,23 @@ OBJCOPY=arm-none-eabi-objcopy
 INCDIRS = -I$(INSTALLDIR)/include -I.
 LIBDIRS = -L$(INSTALLDIR)/lib
 
-LIBS= -lnosys -l$(ARCH) -lcmsis_dsp_$(ARCH)
+LIBS=  -lece486_$(ARCH) -l$(ARCH) -lcmsis_dsp_$(ARCH)
 
 LINKSCRIPT = $(INSTALLDIR)/lib/$(ARCH)_FLASH.ld
 
-CFLAGS = -mcpu=cortex-m4 -mthumb -O3 -Wall \
+CFLAGS = -mcpu=cortex-m4 -mthumb -O3 -Wall  \
          -fomit-frame-pointer -fno-strict-aliasing -fdata-sections \
          -include stm32l4xx_hal_conf.h -DARM_MATH_CM4 -D$(ARCH) \
          -mfpu=fpv4-sp-d16 -mfloat-abi=softfp $(INCDIRS) \
          -fsingle-precision-constant -ffunction-sections
 
-LDFLAGS= -mcpu=cortex-m4 -mthumb -g -Wno-override-init \
-              -Wl,-T$(LINKSCRIPT) \
-              -Wl,--gc-sections $(LIBDIRS)
-
+LDFLAGS = -u _printf_float \
+	  -Wl,-T$(LINKSCRIPT) \
+	  -static \
+          -Wl,--gc-sections $(LIBDIRS)
 .PHONY : all flash clean debug
 
-all: $(TARGET) $(TARGET).bin
+all: $(TARGET) $(TARGET).bin task2
 
 debug : CFLAGS += -DDEBUG -g -Og
 debug : LDFLAGS += -Wl,-Map,$(TARGET).map
@@ -38,7 +39,7 @@ debug : LDFLAGS += -Wl,-Map,$(TARGET).map
 debug : all
 
 $(TARGET): $(OBJS)
-	$(CC) -o $(TARGET)  $(OBJS)  $(LDFLAGS) $(LIBS)
+	$(CC)  -o $(TARGET) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS)
 
 $(TARGET).bin: $(TARGET)
 	$(OBJCOPY) -Obinary $(TARGET) $(TARGET).bin
@@ -47,7 +48,7 @@ flash: $(TARGET).bin
 	st-flash write $(TARGET).bin 0x08000000
 
 task2:
-	gcc running_mean.c task2.c -o task2.out
+	gcc task2.c running_mean.c -o task2.out
 
 clean:
 	rm -f $(OBJS) $(TARGET) $(TARGET).bin $(TARGET).map *.o *.out

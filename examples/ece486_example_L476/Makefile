@@ -39,7 +39,7 @@ debug : LDFLAGS += -Wl,-Map,$(TARGET).map
 
 debug : all
 
-$(TARGET): $(OBJS)
+$(TARGET).out: $(OBJS)
 	$(CC)  -o $(TARGET) $(CFLAGS) $(LDFLAGS) $(OBJS) $(LIBS)
 
 $(TARGET).bin: $(TARGET)

@@ -6,7 +6,7 @@ function [y,s] = calc_running_mean(x,s)
 
 % Author: Ryan Kinney
 % ECE 486 - Lab 1
-% February 13, 2021
+% February 15, 2021
 
 % start by initializing the output block
 y = zeros(1,s.blocksize);
@@ -19,22 +19,18 @@ for i = 1:s.blocksize
         lower_bound = 1;
     end
     
-    % add the samples from the current input
+    % add and average the samples from the current input and past inputs
     y(i) = sum(x(lower_bound:i));
-    
-    % next, add the samples from previous inputs and average y
     y(i) = (y(i)+sum(s.lastM(i:end)))/s.M;
 end
 
-% finally, update s.lastM
+% save the current input samples in s.lastM
+if (s.M > s.blocksize)
+    % need to shift the elements of s.lastM blocksize times to the left
+    s.lastM = circshift(s.lastM,[0,-s.blocksize]);
+end
 
-% need to shift the elements of s.lastM blocksize times to the left
-s.lastM = circshift(s.lastM,[0,-s.blocksize]);
-
-% replace up to the last blocksize locations of M with the last up to
-% M-1 samples of x
-
-% lowerbound checking
+% bound checking
 Mlowbound = s.M-s.blocksize;
 if(Mlowbound < 1)
    Mlowbound = 1; 
