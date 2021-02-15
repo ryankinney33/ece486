@@ -1,4 +1,4 @@
-TARGET=task3
+TARGET=task3.out
 
 OBJS  = task3.o
 

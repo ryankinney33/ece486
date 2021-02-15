@@ -42,8 +42,10 @@ float* calc_running_mean(float* x, struct run_mean* s){
 		y[i] /= (float)s->M;
     }
 
-	// shift s->lastM s->blocksize times to the left
-	array_left_shift(s->lastM,s->M, s->blocksize);
+	// shift s->lastM s->blocksize times to the left if needed
+	if(s->M > s->blocksize){
+		array_left_shift(s->lastM,s->M, s->blocksize);
+	}
 
 	// replace the end of s->lastM with the new samples
 	// get the lowerbounds for both arrays

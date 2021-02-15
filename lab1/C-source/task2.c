@@ -11,8 +11,14 @@ int main(){
     struct run_mean s = init_running_mean(M, blocksize);
 
     y = calc_running_mean(x, &s);
-    printf("printing s.lastM:\n");
+    printf("printing y:\n");
+    for(int i = 0; i < blocksize; i++){
+    	printf("y[%d]=%lf\n",i,y[i]);
+	}
+
+	// free memory and close open files
     terminate_running_mean(&s);
     free(y);
+
     return 0;
 }
