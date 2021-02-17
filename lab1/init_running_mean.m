@@ -5,9 +5,9 @@ function s = init_running_mean(M,blocksize)
 %   mean of the input signal. The structure contains the necessary
 %   information to perform the calculations.
 
-% Author: Ryan Kinney
+% Author: Ryan Kinney, Jason Halliday, and Devin Hoskins
 % ECE 486 - Lab 1
-% February 13, 2021
+% February 17, 2021
 
 % Initialize the structure
 s = struct('M',M,'blocksize',blocksize,'lastM', zeros(1,M-1));

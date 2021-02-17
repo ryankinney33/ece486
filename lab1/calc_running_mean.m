@@ -3,10 +3,12 @@ function [y,s] = calc_running_mean(x,s)
 %   [y,s] = calc_running_mean(x,s) takes a vector x of blocksize input
 %   samples and calculates the running average over s.M input samples.
 %   Structure s contains the information needed for the calculations.
+%   Returns the output signal y, which holds blocksize samples, and also
+%   returns the structure s for future calculations of the running mean.
 
-% Author: Ryan Kinney
+% Author: Ryan Kinney, Jason Halliday, and Devin Hoskins
 % ECE 486 - Lab 1
-% February 15, 2021
+% February 17, 2021
 
 % start by initializing the output block
 y = zeros(1,s.blocksize);
