@@ -15,33 +15,11 @@ y = zeros(1,s.blocksize);
 
 % field s.lastM contains the previous M-1 samples used for the running mean
 for i = 1:s.blocksize
-    % get the lower_bound for samples to add from the current input
-    lower_bound = i - s.M+1;
-    if lower_bound < 1
-        lower_bound = 1;
-    end
+    % find the average of the previous M-1 samples and the current input
+    y(i) = (sum(s.lastM)+x(i))/s.M;
     
-    % add and average the samples from the current input and past inputs
-    y(i) = sum(x(lower_bound:i));
-    y(i) = (y(i)+sum(s.lastM(i:end)))/s.M;
-end
-
-% save the current input samples in s.lastM
-if (s.M > s.blocksize)
-    % need to shift the elements of s.lastM blocksize times to the left
-    s.lastM = circshift(s.lastM,[0,-s.blocksize]);
-end
-
-% bound checking
-Mlowbound = s.M-s.blocksize;
-if(Mlowbound < 1)
-   Mlowbound = 1; 
-end
-Xlowbound = s.blocksize-(s.M-1)+1;
-if(Xlowbound < 1)
-   Xlowbound = 1; 
-end
-
-% add the new samples to s.lastM
-s.lastM(Mlowbound:end) = x(Xlowbound:end);
+    % shift the values in s.lastM one to the left and put the current input
+    % at the end
+    s.lastM = circshift(s.lastM,[0,-1]);
+    s.lastM(end) = x(i);
 end
