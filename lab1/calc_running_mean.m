@@ -14,9 +14,14 @@ function [y,s] = calc_running_mean(x,s)
 y = zeros(1,s.blocksize);
 
 % field s.lastM contains the previous M-1 samples used for the running mean
+% find the sum of lastM
+prevSum = sum(s.lastM);
 for i = 1:s.blocksize
-    % find the average of the previous M-1 samples and the current input
-    y(i) = (sum(s.lastM)+x(i))/s.M;
+    % find the average of the previous M-1 samples and the current input,
+    % and also update the sum of the previous M-1 samples
+    y(i) = prevSum + x(i);
+    prevSum = y(i) - s.lastM(1); % basically adds x(i) to the sum and removes the oldest sample
+    y(i) = y(i)/s.M;
     
     % shift the values in s.lastM one to the left and put the current input
     % at the end
