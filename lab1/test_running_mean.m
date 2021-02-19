@@ -115,14 +115,3 @@ disp("Second iteration of calc_running_mean:");
 display(y3);
 fprintf("\n")
 % at this point, y should be all 1's
-
-
-
-
-
-
-
-
-
-
-
