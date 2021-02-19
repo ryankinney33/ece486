@@ -23,3 +23,4 @@ for i = 1:s.blocksize
     s.lastM = circshift(s.lastM,[0,-1]);
     s.lastM(end) = x(i);
 end
+end
