@@ -19,11 +19,9 @@ struct run_mean init_running_mean(int M, int blocksize){
 	return s;
 }
 
-float* calc_running_mean(float* x, struct run_mean* s){
+void calc_running_mean(float* x, struct run_mean* s,float* y){
 	// initialize the output
-	float* y = (float*)calloc(s->blocksize, sizeof(float));
 	float prevSum = 0.0f;
-
 
 	// get the sum of s->lastM
 	for(int i=0; i < s->M-1; ++i){
@@ -43,7 +41,6 @@ float* calc_running_mean(float* x, struct run_mean* s){
 		// finally, save the current input in s->lastM for future need
 		shift_insert(s->lastM, s->M-1, x[i]);
 	}
-	return y;
 }
 
 void terminate_running_mean(struct run_mean* s){

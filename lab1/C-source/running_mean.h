@@ -9,7 +9,7 @@ struct run_mean {
 
 
 struct run_mean init_running_mean(int M, int blocksize);
-float* calc_running_mean(float* x, struct run_mean* s);
+void calc_running_mean(float* x, struct run_mean* s, float* y);
 void terminate_running_mean(struct run_mean* s);
 
 #endif
