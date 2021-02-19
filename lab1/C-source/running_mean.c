@@ -22,18 +22,25 @@ struct run_mean init_running_mean(int M, int blocksize){
 float* calc_running_mean(float* x, struct run_mean* s){
 	// initialize the output
 	float* y = (float*)calloc(s->blocksize, sizeof(float));
+	float prevSum = 0.0f;
+
+
+	// get the sum of s->lastM
+	for(int i=0; i < s->M-1; ++i){
+		prevSum += s->lastM[i];
+	}
 
 	// iterate over the input samples
 	for(int i=0; i < s->blocksize; ++i){
-		// get the sum of s->lastM
-		for(int j=0; j < s->M-1; ++j){
-			y[i] += s->lastM[j];
-		}
+		// add the current input to prevSum to get the total sum
+		// also saves that sum in prevSum
+		prevSum = y[i] = prevSum + x[i];
 
-		// add the current input and find the average of the sum
-		y[i] = (y[i]+x[i])/(float)s->M;
+		// average y[i] and remove the oldest sample from prevSum
+		y[i] /= (float)s->M;
+		prevSum -= s->lastM[0];
 
-		// finally, save the current input
+		// finally, save the current input in s->lastM for future need
 		shift_insert(s->lastM, s->M-1, x[i]);
 	}
 	return y;
