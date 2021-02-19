@@ -11,7 +11,7 @@ int main(){
 	//  Unit Step
 	//	x[n] = u[n]
 	//
-	//  This first test makes sure calc_running_mean stays within array bounds
+	//  This first test makes sure calc_running_mean stays within array bounds.
 	//  First, let blocksize be larger than M. Also makes sure that s can be used
 	//  in subsequent calculations.
 
@@ -19,41 +19,79 @@ int main(){
 	int blocksize = 15;
 	int M = 10;
 
-	float x1[blocksize];
-	float y1[blocksize];
+	float x[blocksize];
+	float y[blocksize];
 	for(int i = 0; i < blocksize; ++i) {
-		x1[i] = 1.0f;
+		x[i] = 1.0f;
 	}
-	struct run_mean s1 = init_running_mean(M,blocksize);
+	struct run_mean s = init_running_mean(M,blocksize);
 
 	// print some info about the test
 	printf("Test 1: x[n] = u[n]; M = %d; blocksize = %d\n",M,blocksize);
 
-	// calculate the running mean over input x1 a couple times
+	// calculate the running mean over input x a couple times
 
 	// first iteration
-	calc_running_mean(x1,&s1,y1);
+	calc_running_mean(x,&s,y);
 	printf("First iteration of calc_running_mean...\ny = [");
-	print_array(y1,blocksize);
+	print_array(y,blocksize);
 	printf("]\n");
-	// y1 should gradually approach 1 and then stay 1 as the sample number increases
+	// y should gradually approach 1 and then stay 1 as the sample number increases
 
 	// second iteration
-	calc_running_mean(x1,&s1,y1);
+	calc_running_mean(x,&s,y);
 	printf("Second iteration of calc_running_mean...\ny = [");
-	print_array(y1,blocksize);
+	print_array(y,blocksize);
 	printf("]\n\n");
-	// at this point, y1 should be all 1's
+	// at this point, y should be 1 at every index
 
 	// clean up
-	terminate_running_mean(&s1);
+	terminate_running_mean(&s);
+	// end Test 1
+
+	//////////////////////////////////////////////////////
+	//  Test 2
+	//
+	//  Unit Step (again)
+	//  x[n] = u[n]
+	//
+	//  Another test to make sure that calc_running_mean stays within array bounds.
+	//  Tests if M can be larger than blocksize
+
+	// initializing data...
+	// blocksize = 15 already
+	M = 20;
+	// reusing x and y arrays
+	s = init_running_mean(M,blocksize);
+
+	printf("Test 2: x[n] = u[n]; M = %d; blocksize = %d\n",M,blocksize);
+
+	// calculate the running mean over input x a couple times
+
+	// first iteration
+	calc_running_mean(x,&s,y);
+	printf("First iteration of calc_running_mean...\ny = [");
+	print_array(y,blocksize);
+	printf("]\n");
+	// y should gradually approach 1 then stay 1 as teh sample number increases
+
+	// second iteration
+	calc_running_mean(x,&s,y);
+	printf("Second iteration of calc_running_mean...\ny = [");
+	print_array(y,blocksize);
+	printf("]\n\n");
+	// at this point, y should be 1 at every index
+
+	// clean up
+	terminate_running_mean(&s);
+	// end Test 2
 
 	return 0;
 }
 
 void print_array(float* arr, int size){
 	for(int i = 0; i < size-1; ++i){
-		printf("%lf, ",arr[i]);
+		printf("%0.3lf, ",arr[i]);
 	}
-	printf("%lf",arr[size-1]);
+	printf("%0.3lf",arr[size-1]);
 }
