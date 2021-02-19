@@ -31,7 +31,7 @@ LDFLAGS = -u _printf_float \
           -Wl,--gc-sections $(LIBDIRS)
 .PHONY : all flash clean debug
 
-all: $(TARGET) $(TARGET).bin task2
+all: $(TARGET) $(TARGET).bin lab1
 
 debug : CFLAGS += -DDEBUG -g -Og
 debug : LDFLAGS += -Wl,-Map,$(TARGET).map
@@ -47,8 +47,8 @@ $(TARGET).bin: $(TARGET)
 flash: $(TARGET).bin
 	st-flash write $(TARGET).bin 0x08000000
 
-task2:
-	gcc task2.c running_mean.c -o task2.out
+lab1:
+	gcc lab1.c running_mean.c -o lab1.out
 
 clean:
 	rm -f $(OBJS) $(TARGET) $(TARGET).bin $(TARGET).map *.o *.out
