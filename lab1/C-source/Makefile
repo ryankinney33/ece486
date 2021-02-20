@@ -1,6 +1,6 @@
 TARGET=task3.out
 
-OBJS  = task3.o
+OBJS  = lab1STM32.o
 
 INSTALLDIR = /usr/local/stmdev/
 
@@ -48,7 +48,7 @@ flash: $(TARGET).bin
 	st-flash write $(TARGET).bin 0x08000000
 
 lab1:
-	gcc lab1.c running_mean.c -o lab1.out
+	gcc lab1.c running_mean.c -o lab1.out -lm
 
 clean:
 	rm -f $(OBJS) $(TARGET) $(TARGET).bin $(TARGET).map *.o *.out
