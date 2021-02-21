@@ -1,3 +1,17 @@
+/*
+ *  Test script for calc_running_mean
+ *
+ *  Contains various test conditions to test the "correctness" of
+ *  calc_running_mean.
+ *
+ *  These test cases were adapted from the MATLAB file,
+ *  test_running_mean.m and the results should be nearly identical.
+ *
+ *  Authors: Jason Halliday, Devin Hoskins, Ryan Kinney
+ *  ECE 486 - Lab 1
+ *  February 21, 2021
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -9,6 +23,8 @@
 // This function iterates through a float array
 // and prints each value on one line with a space
 // and comma between them
+// Parameter arr is the array to be printed
+// Parameter size is the size of the array
 void print_array(float* arr, int size);
 
 // Runs through the test cases to check the validity of
@@ -135,14 +151,14 @@ int main(){
 	}
 
 	// finally, print the results
-	printf("Test 3: Two different frequency sine waves.\n");
-	printf("x1[n] is a 1 Hz sine wave\nx2[n] is a 100 Hz sine wave.\n");
+	printf("Test 3: Two different frequency sine waves\n");
+	printf("x1[n] is a 1 Hz sine wave\nx2[n] is a 100 Hz sine wave\n");
 	printf("M = %d and blocksize = %d\n",M,blocksize);
 
-	printf("The maximum value of the unfiltered input is 1.\n");
+	printf("The maximum value of the unfiltered input is 1\n");
 	printf("Maximum of y1[n] is %lf\n", max1);
 	printf("Maximum of y2[n] is %lf\n", max2);
-	printf("The maximum of y2 should be much less than that of y1.\n");
+	printf("The maximum of y2 should be much less than that of y1\n");
 
 	// cleaning up...
 	terminate_running_mean(&s1);
@@ -155,10 +171,13 @@ int main(){
 // This function iterates through a float array
 // and prints each value on one line with a space
 // and comma between them
+// Parameter arr is the array to be printed
+// Parameter size is the size of the array
 void print_array(float* arr, int size){
+	// print the first size-1 elements with comma and space
 	for(int i = 0; i < size-1; ++i){
 		printf("%0.3lf, ",arr[i]);
 	}
-	// don't put a comma after the last value
+	// print the last value without a comma or space
 	printf("%0.3lf",arr[size-1]);
 }
