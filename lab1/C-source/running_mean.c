@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <stdio.h>
+
 #include "running_mean.h"
 
 // shifts the elements of an array left once and inserts val at the end
@@ -11,15 +13,21 @@ void shift_insert(float* arr, int size, float val){
 	arr[size-1] = val;
 }
 
-struct run_mean init_running_mean(int M, int blocksize){
-	struct run_mean s;
+struct running_mean init_running_mean(int M, int blocksize){
+	struct running_mean s;
 	s.M = M;
 	s.blocksize = blocksize;
 	s.lastM = (float*)calloc(M-1, sizeof(float));
+
+	// check for error
+	if(s.lastM == NULL){
+		perror("Not enough memory to inialize running_mean.");
+		while(1);
+	}
 	return s;
 }
 
-void calc_running_mean(float* x, struct run_mean* s,float* y){
+void calc_running_mean(float* x, struct running_mean* s,float* y){
 	// initialize the output
 	float prevSum = 0.0f;
 
@@ -43,6 +51,6 @@ void calc_running_mean(float* x, struct run_mean* s,float* y){
 	}
 }
 
-void terminate_running_mean(struct run_mean* s){
+void terminate_running_mean(struct running_mean* s){
 	free(s->lastM);
 }

@@ -1,6 +1,6 @@
-TARGET=task3.out
+TARGET=lab1STM32.out
 
-OBJS  = lab1STM32.o
+OBJS  = lab1STM32.o running_mean.o
 
 INSTALLDIR = /usr/local/stmdev/
 

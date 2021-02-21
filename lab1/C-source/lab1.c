@@ -32,7 +32,7 @@ int main(){
 	for(int i = 0; i < blocksize; ++i) {
 		x[i] = 1.0f;
 	}
-	struct run_mean s = init_running_mean(M,blocksize);
+	struct running_mean s = init_running_mean(M,blocksize);
 
 	// print some info about the test
 	printf("Test 1: x[n] = u[n]; M = %d; blocksize = %d\n",M,blocksize);
@@ -109,8 +109,8 @@ int main(){
 	// initializing data
 	blocksize = 1000;
 	M = 10;
-	struct run_mean s1 = init_running_mean(M,blocksize);
-	struct run_mean s2 = init_running_mean(M,blocksize);
+	struct running_mean s1 = init_running_mean(M,blocksize);
+	struct running_mean s2 = init_running_mean(M,blocksize);
 	float y1[blocksize], y2[blocksize], x1[blocksize], x2[blocksize];
 
 	// build the sine waves
