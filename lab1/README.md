@@ -13,4 +13,4 @@ A script for testing the correctness of the functions described above will be wr
 Rewrite Task 1 in C.
 
 ## Task 3
-Modify the sample program to use the running mean filter from Task 2 on the STM32l476G Discover board.
+Modify the sample program to use the running mean filter from Task 2 on the STM32L476G Discover board.
