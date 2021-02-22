@@ -30,7 +30,7 @@ struct running_mean init_running_mean(int M, int blocksize){
 
 	// check for error
 	if(s.lastM == NULL){
-		perror("Not enough memory to inialize running_mean.");
+		perror("Not enough memory to initialize running_mean.");
 		while(1);
 	}
 	return s;
