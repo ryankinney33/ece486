@@ -3,7 +3,7 @@
  *
  * @brief FIR filter using fixed-length input sample blocks
  *
- * @author Ryan Kinney 
+ * @author Ryan Kinney
  * @author Jason Halliday
  * @author Devin Hoskins
  *
@@ -76,7 +76,7 @@ typedef struct FIR_T {
 	int M;			// the number of filter coefficients (e.g. the size of h)
 	float* lastM;	// contains the previous M-1 samples of the input
 	int blocksize;	// input and output data blocksize
-	
+
 } FIR_T;
 
 /*
