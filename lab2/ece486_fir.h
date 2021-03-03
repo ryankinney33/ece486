@@ -3,10 +3,11 @@
  *
  * @brief FIR filter using fixed-length input sample blocks
  *
- * @author ECE486 Lab Group ????
- * @author Your Name
+ * @author Ryan Kinney 
+ * @author Jason Halliday
+ * @author Devin Hoskins
  *
- * @date ????
+ * @date March 3, 2021
  *
  * @defgroup ece486_fir Function Interface Requirements for ECE 486 Lab 2 FIR Filters
  *   @{
@@ -70,9 +71,13 @@
  *
  * ECE486 Students will need to modify the contents of this structure for lab 2
  */
-typedef struct your_fir_struct {
-          //  Actual contents will depend on implementation
-    } FIR_T;
+typedef struct {
+    float* h;		// contains the needed samples of the impulse response (the filter coefficiencts)
+	int M;			// the number of filter coefficients (e.g. the size of h)
+	float* lastM;	// contains the previous M-1 samples of the input
+	int blocksize;	// input and output data blocksize
+	
+} FIR_T;
 
 /*
  * Function Prototypes
