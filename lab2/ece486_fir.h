@@ -71,7 +71,7 @@
  *
  * ECE486 Students will need to modify the contents of this structure for lab 2
  */
-typedef struct {
+typedef struct FIR_T {
     float* h;		// contains the needed samples of the impulse response (the filter coefficiencts)
 	int M;			// the number of filter coefficients (e.g. the size of h)
 	float* lastM;	// contains the previous M-1 samples of the input
