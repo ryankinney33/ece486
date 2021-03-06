@@ -30,6 +30,7 @@ FIR_T* init_fir(float* fir_coefs, int n_coef, int blocksize){
 	if(n_coef < 1){
 		printf("ERROR: n_coef must be a positive integer\n");
 	}
+
 	// set the members of filter to the necessary values
 	s->blocksize = blocksize;
 	s->M = n_coef;
@@ -40,6 +41,11 @@ FIR_T* init_fir(float* fir_coefs, int n_coef, int blocksize){
 		printf("ERROR: Could not initialize FIR_T.lastM\n");
 		while(1); // busy loop (used for STM microcontoller)
 	}
+
+	// h holds the filter coefficients, which are the same as the impulse response terms
+	s->h = (float*)malloc(n_coef*sizeof(float));
+	if(s->lastM == NULL){
+		printf("Error: Could not initialize FIR_T.h\n");
 
 	// copy fir_coefs into filter.h
 	for(int i = 0; i < s->M; ++i)
