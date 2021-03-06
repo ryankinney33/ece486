@@ -46,6 +46,8 @@ FIR_T* init_fir(float* fir_coefs, int n_coef, int blocksize){
 	s->h = (float*)malloc(n_coef*sizeof(float));
 	if(s->lastM == NULL){
 		printf("Error: Could not initialize FIR_T.h\n");
+		while(1); // busy loop (used for STM microcontroller)
+	}
 
 	// copy fir_coefs into filter.h
 	for(int i = 0; i < s->M; ++i)
@@ -68,8 +70,8 @@ void calc_fir(FIR_T* s, float* x, float* y){
 		}
 
 		// shift s->lastM to the right and insert x[i] at lastM[0]
-		for(int k = s->M-2; i >= 1; --i){
-			s->lastM[i] = s->lastM[i-1];
+		for(int k = s->M-2; k >= 1; --k){
+			s->lastM[k] = s->lastM[k-1];
 		}
 		s->lastM[0] = x[i];
 
