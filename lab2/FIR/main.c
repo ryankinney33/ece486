@@ -25,8 +25,7 @@ int main(){
 	// Unit Impulse
 	//	h[n] = delta(n), where delta = 1 at n = 0, and delta = 0 otherwise
 	//
-	// This test makes sure that the functions stay within array bounds and that
-	// the structure can be used in subsequent calculations and still give correct values
+	// This test makes sure that the functions stay within array bounds
 	//
 	// A simple test to make sure the convolution works correctly.
 	// Basically, if a signal is convolved with the unit impulse, or dirac delta function
