@@ -4,7 +4,7 @@
 
 // stucture for the biquad filter
 typedef struct BIQUAD_T{
-	int blocksize
+	int blocksize;
 	float g;
 
 	float* a;

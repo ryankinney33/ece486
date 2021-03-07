@@ -27,13 +27,13 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 	}
 
 	s->b = (float*)malloc(3*sizeof(float));
-	if(s-> == NULL){
+	if(s->b == NULL){
 		printf("Error: Unable to initialize BIQUAD_T.b\n");
 		while(1); // used for STM32 microcontroller
 	}
 
 	s->v1 = (float*)calloc(blocksize,sizeof(float));
-	if(s == NULL){
+	if(s->v1 == NULL){
 		printf("Error: Unable to initialize BIQUAD_T.v1\n");
 		while(1); // used for STM32 microcontroller
 	}
