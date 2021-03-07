@@ -15,9 +15,6 @@
 #include <stdio.h>
 #include "ece486_fir.h"
 
-
-
-
 // Runs through the test cases
 int main(){
 	// Test Condition 1
