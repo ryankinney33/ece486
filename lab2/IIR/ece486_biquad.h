@@ -6,12 +6,11 @@
 typedef struct BIQUAD_T{
 	int blocksize;
 	float g;
+	float v1;
+	float v2;
 
 	float* a;
 	float* b;
-
-	float* v1;
-	float* v2;
 
 	struct BIQUAD_T* next_section;
 } BIQUAD_T;

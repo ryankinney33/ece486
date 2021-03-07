@@ -18,6 +18,8 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 	// assign the necessary values
 	s->blocksize = blocksize;
 	s->g = g;
+	s->v1 = 0;
+	s->v2 = 0;
 
 	// allocate memory for the arrays
 	s->a = (float*)malloc(2*sizeof(float));
@@ -32,21 +34,9 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 		while(1); // used for STM32 microcontroller
 	}
 
-	s->v1 = (float*)calloc(blocksize,sizeof(float));
-	if(s->v1 == NULL){
-		printf("Error: Unable to initialize BIQUAD_T.v1\n");
-		while(1); // used for STM32 microcontroller
-	}
-
-	s->v2 = (float*)calloc(blocksize,sizeof(float));
-	if(s->v2 == NULL){
-		printf("Error: Unable to initialize BIQUAD_T.v2\n");
-		while(1); // used for STM32 microcontroller
-	}
-
 	// now set the coefficients in s->a and s->b with biquad_coefs array
 	// biquad_coefs looks like the following....
-	// biqaud_coefs =
+	// biquad_coefs =
 	//   {b10, b11, b12, a11, a12, b20, b21, b22, a21, a22, . . . bs0, bs1, bs2, as1, as2}
 	s->b[0]=biquad_coefs[0];
 	s->b[1]=biquad_coefs[1];
@@ -68,9 +58,37 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 
 // recursively calculate the filter output
 void calc_biquad(BIQUAD_T *s, float *x, float *y){
+	// check if this is a valid structure (the exit condition for recursion)
+	if(s == NULL){
+		return;
+	}
 
+	// uses the Transposed Direct-Form II structure
+	//  (1) - y[n] = v1[n-1]+b0*x[n]
+	//  (2) - v1[n] = v2[n-1]-a1*y[n]+b1*x[n]
+	//  (3) - v2[n] = b2*x[n]-a2*y[n]
 
+	// output and input are s->blocksize large, so iterate over that first
 
+	// note: x and y could point to the same place
+	for(int i = 0; i < s->blocksize; ++i){
+		// multiply by the gain
+		float t_x = s->g*x[i]; // also saves x[i] in a temp variable in case x==y
+
+		// evaluate equation (1)
+		y[i] = s->v1+ s->b[0]*t_x;
+
+		// evaluate equation (2)
+		s->v1 = s->v2- s->a[0]*y[i]+ s->b[1]*t_x;
+
+		// evaluate equation (3)
+		s->v2 = s->b[2]*t_x - s->a[1]*y[i];
+	}
+
+	// evaluate the output for the next filter
+	// the input for the next filter is the output from this filter
+	// the output from the filters should all go into y
+	calc_biquad(s->next_section,y,y);
 }
 
 
@@ -80,8 +98,6 @@ void destroy_biquad(BIQUAD_T *s){
 		// start by freeing the arrays
 		free(s->a);
 		free(s->b);
-		free(s->v1);
-		free(s->v2);
 
 		// destroy the next section
 		destroy_biquad(s->next_section);
