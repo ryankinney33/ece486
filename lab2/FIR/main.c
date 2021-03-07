@@ -35,47 +35,122 @@ int main(){
 	// Initializing the data...
 
 	// Things needed for the structure are blocksize and the number of terms in the FIR
-	int blocksize = 10;
-	int M = 5;
+	int blocksize1 = 10;
+	int M1 = 5;
 
 	// Now supply the filter coefficients (AKA, the impulse response terms)
-	float* b = (float*)calloc(M,sizeof(float));
-	if(b==NULL){
-		printf("Error: Could not reserve memory for b\n");
+	float* b1 = (float*)calloc(M1,sizeof(float));
+	if(b1==NULL){
+		printf("Error: Could not reserve memory for b1\n");
 		exit(1);
 	}
-	b[0] = 1; // b should be zero at all points except at n = 0
+	b1[0] = 1; // b1 should be zero at all points except at n = 0
 
 	// Create the filter structure
-	FIR_T* filt = init_fir(b,M,blocksize);
+	FIR_T* filt1 = init_fir(b1,M1,blocksize1);
 
 	// Now create the input and output arrays
-	float* x = (float*)malloc(blocksize*sizeof(float));
-	if(x==NULL){
-		printf("Error: Could not reserve memory for x\n");
+	float* x1 = (float*)malloc(blocksize1*sizeof(float));
+	if(x1==NULL){
+		printf("Error: Could not reserve memory for x1\n");
 		exit(1);
 	}
-	float* y = (float*)malloc(blocksize*sizeof(float));
-	if(y==NULL){
-		printf("Error: Could not reserve memory for y\n");
+	float* y1 = (float*)malloc(blocksize1*sizeof(float));
+	if(y1==NULL){
+		printf("Error: Could not reserve memory for y1\n");
 		exit(1);
 	}
 
-	// Make up some data for x, suppose x[n] = n
-	for(int i = 0; i<blocksize; ++i)
-		x[i] = i;
+	// Make up some data for x1, suppose x1[n] = n
+	for(int i = 0; i<blocksize1; ++i)
+		x1[i] = i;
 
 	// Calculate output and print test results.
-	calc_fir(filt,x,y);
+	calc_fir(filt1,x1,y1);
 
-	printf("x[n] = {"); print_array(x,blocksize); printf("}\n");
-	printf("y[n] = {"); print_array(y,blocksize); printf("}\n");
+	printf("Test 1: h[n] = unit impulse; x[n] = n; M = %d; blocksize = %d\n",M1,blocksize1);
+	printf(" First iteration of calc_fir, which performs discrete convolution, h*x:\n");
+	printf("  x[n] = {"); print_array(x1,blocksize1); printf("}\n");
+	printf("  y[n] = {"); print_array(y1,blocksize1); printf("}\n\n");
 
 	// finally, free the reserved memory
-	free(b);
-	free(x);
-	free(y);
-	destroy_fir(filt);
+	free(b1);
+	free(x1);
+	free(y1);
+	destroy_fir(filt1);
+	// end Test 1
+
+	/////////////////////////////////////////////////////////////////////////////
+	// Test Condition 2
+	//
+	// 	h[n] is 0 before n = 0, 1 for n = 0,1,2, and 0 afterwards
+	//	x[n] = u[n], the unit step function
+	//
+	// This test verifies that M can be less than blocksize and that the convolution
+	// is correctly calculated. Also makes sure that the interface can be used in
+	// subsequent calculations
+	//
+	// Another simple test to make sure the convolution works correctly.
+	// With the current combination of x and h, output y should start at 1 and
+	// increase by 1 until it is 3, and then it will stay at 3
+	//
+
+	// Initializing the data...
+
+	// Things needed for the structure are blocksize and the number of terms in the FIR
+	int blocksize2 = 5;
+	int M2 = 10;
+
+	// Now supply the filter coefficients (AKA, the impulse response terms)
+	float* b2 = (float*)calloc(M2,sizeof(float));
+	if(b2==NULL){
+		printf("Error: Could not reserve memory for b2\n");
+		exit(1);
+	}
+	b2[0] = 1; // b2 should be zero at all points except at n = 0,1,2
+	b2[1] = 1; // b2 should be zero at all points except at n = 0,1,2
+	b2[2] = 1; // b2 should be zero at all points except at n = 0,1,2
+
+	// Create the filter structure
+	FIR_T* filt2 = init_fir(b2,M2,blocksize2);
+
+	// Now create the input and output arrays
+	float* x2 = (float*)malloc(blocksize2*sizeof(float));
+	if(x2==NULL){
+		printf("Error: Could not reserve memory for x2\n");
+		exit(1);
+	}
+	float* y2 = (float*)malloc(blocksize2*sizeof(float));
+	if(y2==NULL){
+		printf("Error: Could not reserve memory for y2\n");
+		exit(1);
+	}
+
+	// Create the unit step for x2
+	for(int i = 0; i<blocksize2; ++i)
+		x2[i] = 1;
+
+	// Calculate output and print test results.
+	calc_fir(filt2,x2,y2);
+
+	printf("Test 2: x[n] = u[n]; M = %d; blocksize = %d\n",M2,blocksize2);
+	printf("h[n] = {"); print_array(b2,M2); printf("}\n");
+	printf(" First iteration of calc_fir, which performs discrete convolution, h*x:\n");
+	printf("  x[n] = {"); print_array(x2,blocksize2); printf("}\n");
+	printf("  y[n] = {"); print_array(y2,blocksize2); printf("}\n");
+
+	// run the convolution again
+	calc_fir(filt2,x2,y2);
+	printf(" Second iteration of calc_fir, which performs discrete convolution, h*x:\n");
+	printf("  x[n] = {"); print_array(x2,blocksize2); printf("}\n");
+	printf("  y[n] = {"); print_array(y2,blocksize2); printf("}\n\n");
+
+	// finally, free the reserved memory
+	free(b2);
+	free(x2);
+	free(y2);
+	destroy_fir(filt2);
+
 
 	exit(0);
 }
