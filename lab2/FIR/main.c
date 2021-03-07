@@ -15,6 +15,9 @@
 #include <stdio.h>
 #include "ece486_fir.h"
 
+// prints an array on one line, each element separated by ', '
+void print_array(float* arr, int size);
+
 // Runs through the test cases
 int main(){
 	// Test Condition 1
@@ -65,9 +68,8 @@ int main(){
 	// Calculate output and print test results.
 	calc_fir(filt,x,y);
 
-	for(int i=0; i<blocksize; ++i){
-		printf("x[%d] = %lf\ty[%d]=%lf\n",i,x[i],i,y[i]);
-	}
+	printf("x[n] = {"); print_array(x,blocksize); printf("}\n");
+	printf("y[n] = {"); print_array(y,blocksize); printf("}\n");
 
 	// finally, free the reserved memory
 	free(b);
@@ -76,4 +78,14 @@ int main(){
 	destroy_fir(filt);
 
 	exit(0);
+}
+
+// prints an array on one line, each element separated by ', '
+void print_array(float* arr, int size){
+	if(size > 0){
+		int i;
+		for(i = 0; i < size-1; ++i)
+			printf("%lf, ",arr[i]);
+		printf("%lf",arr[i]);
+	}
 }
