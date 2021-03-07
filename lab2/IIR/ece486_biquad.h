@@ -7,8 +7,8 @@ typedef struct BIQUAD_T{
 	int blocksize
 	float g;
 
-	float* a_coef;
-	float* b_coef;
+	float* a;
+	float* b;
 
 	float* v1;
 	float* v2;
