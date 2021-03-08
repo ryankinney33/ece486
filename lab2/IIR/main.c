@@ -41,6 +41,11 @@ int main(){
 
 	printf("  x[n] = {"); print_array(x,blocksize); printf("}\n");
 	printf("  y[n] = {"); print_array(y,blocksize); printf("}\n\n");
+
+	// cleanup
+	free(x);
+	free(y);
+	destroy_biquad(filter);
 }
 
 // prints an array on one line, each element separated by ', '
