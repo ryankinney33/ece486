@@ -13,7 +13,7 @@ main.out: main.o ece486_biquad.o
 	$(CC) -c $< -o $@
 
 main.o: main.c ece486_biquad.h
-ece486_biquad.o: ece486_fir.c ece486_biquad.h
+ece486_biquad.o: ece486_biquad.c ece486_biquad.h
 
 clean:
 	rm -rf *.out *.o

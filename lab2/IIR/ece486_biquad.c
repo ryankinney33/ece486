@@ -9,7 +9,8 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 	}
 
 	// start by creating the structure
-	BIQUAD_T* s = (BIQUAD_T*)malloc(sizeof(BIQUAD_T*));
+	BIQUAD_T* s;
+	s = (BIQUAD_T*)malloc(sizeof(BIQUAD_T));
 	if(s == NULL){
 		printf("Error: Unable to initialize BIQUAD_T\n");
 		while(1); // used for STM32 microcontroller
@@ -52,7 +53,6 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 		// this is the final section, next_section should be null
 		s->next_section = NULL;
 	}
-
 	return s;
 }
 
