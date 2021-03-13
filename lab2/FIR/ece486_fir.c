@@ -24,11 +24,13 @@ FIR_T* init_fir(float* fir_coefs, int n_coef, int blocksize){
 	s = (FIR_T*)malloc(sizeof(FIR_T));
 	if(s == NULL){
 		printf("ERROR: Not enough memory to initialize FIR_T\n");
-		while(1); // busy loop (used for STM microcontoller)
+		return NULL;
 	}
 
 	if(n_coef < 1){
 		printf("ERROR: n_coef must be a positive integer\n");
+		destroy_fir(s);
+		return NULL;
 	}
 
 	// set the members of filter to the necessary values
@@ -39,14 +41,16 @@ FIR_T* init_fir(float* fir_coefs, int n_coef, int blocksize){
 	s->lastM = (float*)calloc(n_coef-1, sizeof(float));
 	if(s->lastM == NULL){
 		printf("ERROR: Could not initialize FIR_T.lastM\n");
-		while(1); // busy loop (used for STM microcontoller)
+		destroy_fir(s);
+		return NULL;
 	}
 
 	// h holds the filter coefficients, which are the same as the impulse response terms
 	s->h = (float*)malloc(n_coef*sizeof(float));
-	if(s->lastM == NULL){
+	if(s->h == NULL){
 		printf("Error: Could not initialize FIR_T.h\n");
-		while(1); // busy loop (used for STM microcontroller)
+		destroy_fir(s);
+		return NULL;
 	}
 
 	// copy fir_coefs into filter.h
@@ -83,7 +87,11 @@ void calc_fir(FIR_T* s, float* x, float* y){
 
 // Frees the reserved memory from the FIR_T
 void destroy_fir(FIR_T* s){
-	free(s->h);
-	free(s->lastM);
-	free(s);
+	if(s){ // equivalent to s != NULL
+		if(s->h) // free s.h if it is not NULL
+			free(s->h);
+		if(s->lastM) // free s.lastM if it is not NULL
+			free(s->lastM);
+		free(s);
+	}
 }

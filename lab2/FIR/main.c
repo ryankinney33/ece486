@@ -48,6 +48,10 @@ int main(){
 
 	// Create the filter structure
 	FIR_T* filt1 = init_fir(b1,M1,blocksize1);
+	if(filt1==NULL){
+		printf("Error: Coult not reserve memory for filt1\n");
+		exit(1);
+	}
 
 	// Now create the input and output arrays
 	float* x1 = (float*)malloc(blocksize1*sizeof(float));
@@ -113,6 +117,10 @@ int main(){
 
 	// Create the filter structure
 	FIR_T* filt2 = init_fir(b2,M2,blocksize2);
+	if(filt2==NULL){
+		printf("Error: Could not reserve memory for filt2\n");
+		exit(1);
+	}
 
 	// Now create the input and output arrays
 	float* x2 = (float*)malloc(blocksize2*sizeof(float));
