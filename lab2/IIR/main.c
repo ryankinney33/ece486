@@ -48,8 +48,6 @@ int main(){
 	printf("  y[n] = {"); print_array(y,blocksize); printf("}\n\n");
 
 	// cleanup
-	free(x);
-	free(y);
 	destroy_biquad(filter);
 
 	//Test 2 - Sine wave input
@@ -60,12 +58,16 @@ int main(){
 	blocksize = 20;
 	sections = 2;
 	gain = 1;
+
 	
+	//Define input x[n] = sin[n]
 	for(int i = 0; i < 20; i++) {
 		x[i] = sin(i);
 	}
+	//x = calloc(blocksize,sizeof(float));
+	//y = malloc(blocksize*sizeof(float));
 
-	calc_biquad(filter,x,y);
+	calc_biquad(filter2,x,y);
 
 	printf("--TEST 2--\n");
 	printf("Sin(n) Input - Compared with MATLAB script\n");
@@ -76,13 +78,13 @@ int main(){
 	// cleanup
 	free(x);
 	free(y);
-	destroy_biquad(filter);
+	destroy_biquad(filter2);
 
 	//Test 3 - Testing filter function over multiple calls
 	//Initialize test conditions
 	
-//	BIQUAD_T* filter2 = init_biquad(sections,gain,filter_coef,blocksize);
-//	
+//	BIQUAD_T* filter3 = init_biquad(sections,gain,filter_coef,blocksize);
+	
 //	blocksize = 10;
 //	sections = 2;
 //	gain = 1;
@@ -90,19 +92,19 @@ int main(){
 //	for(int i = 0; i < 20; i++) {
 //		x[i] = sin(i);
 //	}
-//
-//	calc_biquad(filter,x,y);
 
-//	printf("--TEST 2--\n");
+//	calc_biquad(filter3,x,y);
+
+//	printf("--TEST 3--\n");
 //	printf("Sin(n) Input - Compared with MATLAB script\n");
 //	printf("  x[n] = {"); print_array(x,blocksize); printf("}\n");
 //	printf("  y[n] = {"); print_array(y,blocksize); printf("}\n\n");
 
 
-//	// cleanup
+	// cleanup
 //	free(x);
 //	free(y);
-//	destroy_biquad(filter);
+//	destroy_biquad(filter3);
 
 
 }
