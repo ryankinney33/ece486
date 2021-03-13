@@ -25,16 +25,29 @@ int main(){
 	// Test 1
 	// this one is basically the final question on homework 2
 
+	// Initialize data.....
 	int blocksize = 20;
 	int sections = 2;
 	float gain = 0.01388599;
 	float filter_coef[] = {1,1.6180,1,-1.5371,0.9025,1,-0.6180,1,0,-0.81};
 
 	BIQUAD_T* filter = init_biquad(sections,gain,filter_coef,blocksize);
+	if(filter == NULL){ // check for a memory allocation error
+		printf("Error: Could not reserve memory for filter\n");
+		exit(1);
+	}
 
 	// make the input and output data
-	float* x = calloc(blocksize,sizeof(float));
-	float* y = malloc(blocksize*sizeof(float));
+	float* x = (float*)calloc(blocksize,sizeof(float));
+	if(x == NULL){
+		printf("Error: Could not reserve memory for x\n");
+		exit(1);
+	}
+	float* y = (float*)malloc(blocksize*sizeof(float));
+	if(y == NULL){
+		printf("Error: Could not reserve memory for y\n");
+		exit(1);
+	}
 	x[0] = 3.0f;
 	x[1] = 1.5f;
 	x[2] = -1.8f;
@@ -48,24 +61,24 @@ int main(){
 	printf("  y[n] = {"); print_array(y,blocksize); printf("}\n\n");
 
 	// cleanup
+	//free(x); // x and y are reused
+	//free(y);
 	destroy_biquad(filter);
 
 	//Test 2 - Sine wave input
 	//Initialize test conditions
-	
+	// blocksize, and sections are the same as in the previous test
+	gain = 0.5f;
 	BIQUAD_T* filter2 = init_biquad(sections,gain,filter_coef,blocksize);
-	
-	blocksize = 20;
-	sections = 2;
-	gain = 1;
+	if(filter2 == NULL){
+		printf("Error: Could not reserve memory for filter2\n");
+		exit(1);
+	}
 
-	
 	//Define input x[n] = sin[n]
-	for(int i = 0; i < 20; i++) {
+	for(int i = 0; i < blocksize; i++) {
 		x[i] = sin(i);
 	}
-	//x = calloc(blocksize,sizeof(float));
-	//y = malloc(blocksize*sizeof(float));
 
 	calc_biquad(filter2,x,y);
 
