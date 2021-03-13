@@ -13,13 +13,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "ece486_biquad.h"
+
 
 // prints an array on one line, each element separated by ', '
 void print_array(float* arr, int size);
 
 // Runs through the test cases
 int main(){
+	// Test 1
 	// this one is basically the final question on homework 2
 
 	int blocksize = 20;
@@ -39,6 +42,8 @@ int main(){
 
 	calc_biquad(filter,x,y);
 
+	printf("--TEST 1--\n");
+	printf("HW2 #5 - Comparing values with MATLAB script\n");
 	printf("  x[n] = {"); print_array(x,blocksize); printf("}\n");
 	printf("  y[n] = {"); print_array(y,blocksize); printf("}\n\n");
 
@@ -46,6 +51,60 @@ int main(){
 	free(x);
 	free(y);
 	destroy_biquad(filter);
+
+	//Test 2 - Sine wave input
+	//Initialize test conditions
+	
+	BIQUAD_T* filter2 = init_biquad(sections,gain,filter_coef,blocksize);
+	
+	blocksize = 20;
+	sections = 2;
+	gain = 1;
+	
+	for(int i = 0; i < 20; i++) {
+		x[i] = sin(i);
+	}
+
+	calc_biquad(filter,x,y);
+
+	printf("--TEST 2--\n");
+	printf("Sin(n) Input - Compared with MATLAB script\n");
+	printf("  x[n] = {"); print_array(x,blocksize); printf("}\n");
+	printf("  y[n] = {"); print_array(y,blocksize); printf("}\n\n");
+
+
+	// cleanup
+	free(x);
+	free(y);
+	destroy_biquad(filter);
+
+	//Test 3 - Testing filter function over multiple calls
+	//Initialize test conditions
+	
+//	BIQUAD_T* filter2 = init_biquad(sections,gain,filter_coef,blocksize);
+//	
+//	blocksize = 10;
+//	sections = 2;
+//	gain = 1;
+	
+//	for(int i = 0; i < 20; i++) {
+//		x[i] = sin(i);
+//	}
+//
+//	calc_biquad(filter,x,y);
+
+//	printf("--TEST 2--\n");
+//	printf("Sin(n) Input - Compared with MATLAB script\n");
+//	printf("  x[n] = {"); print_array(x,blocksize); printf("}\n");
+//	printf("  y[n] = {"); print_array(y,blocksize); printf("}\n\n");
+
+
+//	// cleanup
+//	free(x);
+//	free(y);
+//	destroy_biquad(filter);
+
+
 }
 
 // prints an array on one line, each element separated by ', '
