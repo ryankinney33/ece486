@@ -13,7 +13,7 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 	s = (BIQUAD_T*)malloc(sizeof(BIQUAD_T));
 	if(s == NULL){
 		printf("Error: Unable to initialize BIQUAD_T\n");
-		while(1); // used for STM32 microcontroller
+		return NULL;
 	}
 
 	// assign the necessary values
@@ -26,13 +26,15 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 	s->a = (float*)malloc(2*sizeof(float));
 	if(s->a == NULL){
 		printf("Error: Unable to initialize BIQUAD_T.a\n");
-		while(1); // used for STM32 microcontroller
+		destroy_biquad(s);
+		return NULL;
 	}
 
 	s->b = (float*)malloc(3*sizeof(float));
 	if(s->b == NULL){
 		printf("Error: Unable to initialize BIQUAD_T.b\n");
-		while(1); // used for STM32 microcontroller
+		destroy_biquad(s);
+		return NULL;
 	}
 
 	// now set the coefficients in s->a and s->b with biquad_coefs array
@@ -49,6 +51,10 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 	// only thing left is to create the next section (if applicable)
 	if(sections > 1){
 		s->next_section = init_biquad(sections-1,1.0f,biquad_coefs+5,blocksize);
+		if(s->next_section == NULL){ // there was a memory allocation error
+			destroy_biquad(s);
+			return NULL;
+		}
 	}else{
 		// this is the final section, next_section should be null
 		s->next_section = NULL;
@@ -94,10 +100,12 @@ void calc_biquad(BIQUAD_T *s, float *x, float *y){
 
 // free reserved memory
 void destroy_biquad(BIQUAD_T *s){
-	if(s != NULL){
+	if(s){ // same as s != NULL
 		// start by freeing the arrays
-		free(s->a);
-		free(s->b);
+		if(s->a)
+			free(s->a);
+		if(s->b)
+			free(s->b);
 
 		// destroy the next section
 		destroy_biquad(s->next_section);

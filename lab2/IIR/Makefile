@@ -7,7 +7,7 @@ CC=gcc
 all: main.out
 
 main.out: main.o ece486_biquad.o
-	$(CC) -o main.out main.o ece486_biquad.o
+	$(CC) -o main.out main.o ece486_biquad.o -lm
 
 %.o: %.c
 	$(CC) -c $< -o $@
