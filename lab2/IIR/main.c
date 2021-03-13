@@ -96,28 +96,56 @@ int main(){
 	//Test 3 - Testing filter function over multiple calls
 	//Initialize test conditions
 	
-//	BIQUAD_T* filter3 = init_biquad(sections,gain,filter_coef,blocksize);
 	
-//	blocksize = 10;
-//	sections = 2;
-//	gain = 1;
+	// make the input and output data
 	
-//	for(int i = 0; i < 20; i++) {
-//		x[i] = sin(i);
-//	}
+	blocksize = 10;
+	sections = 2;
+	gain = 0.5f;
 
-//	calc_biquad(filter3,x,y);
 
-//	printf("--TEST 3--\n");
-//	printf("Sin(n) Input - Compared with MATLAB script\n");
-//	printf("  x[n] = {"); print_array(x,blocksize); printf("}\n");
-//	printf("  y[n] = {"); print_array(y,blocksize); printf("}\n\n");
+	x = (float*)calloc(blocksize,sizeof(float));
+	if(x == NULL){
+		printf("Error: Could not reserve memory for x\n");
+		exit(1);
+	}
+	y = (float*)malloc(blocksize*sizeof(float));
+	if(y == NULL){
+		printf("Error: Could not reserve memory for y\n");
+		exit(1);
+	}
+
+	float* y1 = (float*)malloc(blocksize*sizeof(float));
+	if(y == NULL){
+		printf("Error: Could not reserve memory for y\n");
+		exit(1);
+	}
+
+	BIQUAD_T* filter3 = init_biquad(sections,gain,filter_coef,blocksize);	
+
+	//Define input x[n] = sin[n]
+	for(int i = 0; i < blocksize; i++) {
+		x[i] = sin(i);
+	}
+
+	calc_biquad(filter3,x,y);
+	calc_biquad(filter3,y,y1);
+
+	printf("--TEST 3--\n");
+	printf("Sin(n) Input\n");
+	printf("  x[n] = {"); print_array(x,blocksize); printf("}\n");
+	printf("First Iteration Output\n");
+	printf("  y[n] = {"); print_array(y,blocksize); printf("}\n");
+	printf("Second Iteration Output\n");
+	printf("  y[n] = {"); print_array(y1,blocksize); printf("}\n\n");
+
 
 
 	// cleanup
-//	free(x);
-//	free(y);
-//	destroy_biquad(filter3);
+	free(x);
+	free(y);
+	free(y1);
+	destroy_biquad(filter3);
 
 
 }
