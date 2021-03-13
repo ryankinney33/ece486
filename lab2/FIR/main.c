@@ -49,7 +49,7 @@ int main(){
 	// Create the filter structure
 	FIR_T* filt1 = init_fir(b1,M1,blocksize1);
 	if(filt1==NULL){
-		printf("Error: Coult not reserve memory for filt1\n");
+		printf("Error: Could not reserve memory for filt1\n");
 		exit(1);
 	}
 
