@@ -10,4 +10,4 @@ Develop a separate routine to test your code, and document your test results.
 *IIR Filters*: Write and test a C-code implementation of IIR filters through cascaded biquadratic filters. Each biquad filter is implemented using the *Transposed Direct Form II*.
 
 ## Task 3
-*Real-Time Implementation* Write a program that uses the above FIR and Biquad functions to demonstrate discrete-time filters in real-time using the ECE486 ARM development board, using a sampling rate of 48 ksps. Use a function generator to drive an ADC input on the development board, calculate a filter output, and deliver the output waveform to a DAC output for measurement using an oscilloscope.
+*Real-Time Implementation*: Write a program that uses the above FIR and Biquad functions to demonstrate discrete-time filters in real-time using the ECE486 ARM development board, using a sampling rate of 48 ksps. Use a function generator to drive an ADC input on the development board, calculate a filter output, and deliver the output waveform to a DAC output for measurement using an oscilloscope.
