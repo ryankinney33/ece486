@@ -5,6 +5,7 @@
 % Authors: Jason Halliday, Devin Hoskins, Ryan Kinney
 % ECE 486 - Spring 2021
 % March 14, 2021
+
 %% Test 1
 
 % Test 1 is when h[n] is the unit impulse

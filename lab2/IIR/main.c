@@ -156,7 +156,7 @@ void print_array(float* arr, int size){
 	if(size > 0){
 		int i;
 		for(i = 0; i < size-1; ++i)
-			printf("%0.5lf, ",arr[i]);
-		printf("%0.5lf",arr[i]);
+			printf("%lf, ",arr[i]);
+		printf("%lf",arr[i]);
 	}
 }

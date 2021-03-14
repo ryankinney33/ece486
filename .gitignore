@@ -6,6 +6,9 @@ ece486_example
 stm32IIR
 stm32FIR
 
+# MATLAB autosave files
+*.asv
+
 # Object files
 *.o
 *.ko
