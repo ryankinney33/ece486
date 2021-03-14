@@ -56,4 +56,4 @@ ece486_biquad.o:
 	$(CC)  -c -o ece486_biquad.o $(IIRDIR)/ece486_biquad.c -I$(IIRDIR) $(CFLAGS) $(LDFLAGS) $(LIBS)
 
 clean:
-	rm -f $(OBJS) $(TARGET) $(TARGET).bin $(TARGET).map *.o
+	rm -f $(OBJS) stm32FIR stm32IIR *.bin *.map *.o
