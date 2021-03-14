@@ -1,6 +1,11 @@
 # Prerequisites
 *.d
 
+# Lab executables
+ece486_example
+stm32IIR
+stm32FIR
+
 # Object files
 *.o
 *.ko
