@@ -32,7 +32,7 @@ int main(void){
 
 	// Allocate Required Memory
 	nsamp = getblocksize();
-	sections = 1;
+	sections = 3;
 	gain = 1.0f;
 	input = (float*)malloc(nsamp*sizeof(float));
 	output = (float*)malloc(nsamp*sizeof(float));
@@ -45,7 +45,11 @@ int main(void){
 	}
 
 	// Set the filter coefficients
-	filtcoef[0] = 1.0f;
+	for(int i = 0; i < sections; ++i){
+		filtcoef[i*5] = 1.0f;
+	}
+	// Now, for the filter coefficients, b0 for each section should be 1
+	// all other coefficients should be 0, causing y[n] = x[n]
 
 	// Create the filter structure
 	filt = init_biquad(sections, gain, filtcoef, nsamp);

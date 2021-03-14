@@ -43,7 +43,7 @@ int main(void){
 	}
 
 	// Set the filter coefficients
-	filtcoef[0] = 1.0f;
+	filtcoef[0] = 1.0f; // If h[n] = 1 only at n = 0, then the input and output should be the same
 
 	// Create the filter structure
 	filt = init_fir(filtcoef, ncoef, nsamp);
