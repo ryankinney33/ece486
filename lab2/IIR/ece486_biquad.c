@@ -1,8 +1,33 @@
+/*
+ * This file contains the definitions for the functions
+ * to implement IIR filters for blocks of input data.
+ *
+ * Contains the definition of the function for
+ * initializing the structure, the function for using the
+ * structure and an input array to calculate the filter
+ * output, and a function for freeing the memory used
+ * by the structure.
+ *
+ * Authors: Ryan Kinney, Jason Halliday, Devin Hoskins
+ * ECE 486 - Spring 2021
+ * March 14, 2021
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "ece486_biquad.h"
 
-// recursively create the biquad filter structure
+/*
+ * Recursively initializes the cascaded biquad filter structure.
+ * Arguments:
+ *	int sections	// The number of biquad filters in the sequence
+ *	float g		// The gain constant to multiply the input by (first section only)
+ *	float *biquad_coefs
+ *		// This is the array of biquad coefficients. It must be allocated by the caller
+ *		// And has the form of {b10, b11, b12, a11, a12, b20, b21, b22, a21, a22, . . . bs0, bs1, bs2, as1, as2}
+ *		// The size of this array should be 5*sections
+ *	int blocksize	// The number of sample for input and output
+ */
 BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize){
 	if(sections < 1){ // if there are no sections in the filter, then what are you doing?
 		return NULL;
@@ -62,7 +87,14 @@ BIQUAD_T *init_biquad(int sections, float g, float *biquad_coefs, int blocksize)
 	return s;
 }
 
-// recursively calculate the filter output
+/*
+ * Calculate a block of output samples from a block of input samples
+ * Works recursively to call itself on the next filter in the sequence
+ * Arguments:
+ *	BIQUAD_T *s	// Pointer to the filter structure created by init_biquad or modified by this function
+ *	float *x	// Input data block (must be allocated by caller)
+ *	float *y	// Output data block (must be allocated by caller)
+ */
 void calc_biquad(BIQUAD_T *s, float *x, float *y){
 	// check if this is a valid structure (the exit condition for recursion)
 	if(s == NULL){
@@ -98,7 +130,13 @@ void calc_biquad(BIQUAD_T *s, float *x, float *y){
 }
 
 
-// free reserved memory
+/*
+ * Frees the memory reserved by the BIQUAD_T structure
+ * Recursively frees the memory of all the subsequent biquad
+ * filters in the sequence
+ * Arguments:
+ *	BIQUAD_T *s	// Pointer to the filter structure to be "destroyed"
+ */
 void destroy_biquad(BIQUAD_T *s){
 	if(s){ // same as s != NULL
 		// start by freeing the arrays
