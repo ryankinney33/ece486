@@ -61,7 +61,7 @@ int main(void){
 	}
 
 	// print information about the program
-    printf("Starting execution using %d samples per input block.\r\n",nsamp);
+	printf("Starting execution using %d samples per input block.\r\n",nsamp);
 
 	// Infinite loop to process the data stream, "nsamp" samples at a time
 	while(1){
